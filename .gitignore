@@ -1,0 +1,11 @@
+/.class
+/.settings/
+/.classpath
+/.project
+/target/
+/modules/*/.class
+/modules/*/.settings/
+/modules/*/.classpath
+/modules/*/.project
+/modules/*/target/
+/modules/*/src/main/resources/jdbc.properties

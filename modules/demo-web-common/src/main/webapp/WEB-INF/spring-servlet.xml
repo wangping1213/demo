@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+	
+	
+
+    <context:component-scan base-package="com.hisign"/>
+    
+	<!-- servlet适配器，这里必须明确声明，因为spring默认没有初始化该适配器 -->
+	<bean id="servletHandlerAdapter" class="org.springframework.web.servlet.handler.SimpleServletHandlerAdapter"/>
+
+	<bean id="protocolFactory" class="org.apache.thrift.protocol.TBinaryProtocol$Factory"/>
+	<bean id="transportFactory" class="org.apache.thrift.transport.TFramedTransport$Factory"/>
+
+	<bean id="helloProcessor" class="com.hisign.MyProcessorFactoryBean">
+		<property name="serviceInterface" value="com.hisign.HelloWorldService"/>
+		<property name="serviceImplObject" ref="helloWorld"/>
+	</bean>
+	
+	<bean name="/helloService" class="com.hisign.ThriftServletProxy">
+		<property name="processor" ref="helloProcessor"/>
+		<property name="protocolFactory" ref="protocolFactory"/>
+		<property name="transportFactory" ref="transportFactory"/>
+	</bean>	
+	
+	<bean id="userProcessor" class="com.hisign.MyProcessorFactoryBean">
+		<property name="serviceInterface" value="com.hisign.service.UserService"/>
+		<property name="serviceImplObject" ref="userService"/>
+	</bean>
+	
+	<bean name="/userService" class="com.hisign.ThriftServletProxy">
+		<property name="processor" ref="userProcessor"/>
+		<property name="protocolFactory" ref="protocolFactory"/>
+		<property name="transportFactory" ref="transportFactory"/>
+	</bean>	
+ 
+</beans>

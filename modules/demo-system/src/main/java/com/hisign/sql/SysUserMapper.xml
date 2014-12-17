@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hisign.dao.SysUserMapper" >
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.createDatetimeCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.hisign.DateToStringTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.hisign.DateToStringTypeHandler} and #{criterion.secondValue,typeHandler=com.hisign.DateToStringTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=com.hisign.DateToStringTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.updateDatetimeCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.hisign.DateToStringTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.hisign.DateToStringTypeHandler} and #{criterion.secondValue,typeHandler=com.hisign.DateToStringTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=com.hisign.DateToStringTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.createDatetimeCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.hisign.DateToStringTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.hisign.DateToStringTypeHandler} and #{criterion.secondValue,typeHandler=com.hisign.DateToStringTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=com.hisign.DateToStringTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.updateDatetimeCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.hisign.DateToStringTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.hisign.DateToStringTypeHandler} and #{criterion.secondValue,typeHandler=com.hisign.DateToStringTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=com.hisign.DateToStringTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, USERNAME, PASSWORD, TRUE_NAME, USER_LEVEL, OPEN_FLAG, DEFAULT_MODULE, REMARK, 
+    CREATE_USER, CREATE_DATETIME, UPDATE_USER, UPDATE_DATETIME, POLICE_ID, CARD_ID, USER_TEL, 
+    USER_UNIT, IP, IFIP, REV1, REV2, REV3, REV4, REV5, REV6, REV7
+  </sql>
+  <sql id="ForCount" >
+    count(1)
+  </sql>
+  <sql id="select_By_Filter_For_Where" >
+    <where >
+    	<if test="username != null" >
+	        and USERNAME = #{username,jdbcType=VARCHAR}
+	      </if>
+	      <if test="password != null" >
+	        and PASSWORD = #{password,jdbcType=VARCHAR}
+	      </if>
+	      <if test="trueName != null" >
+	        and TRUE_NAME = #{trueName,jdbcType=VARCHAR}
+	      </if>
+	      <if test="userLevel != null" >
+	        and USER_LEVEL = #{userLevel,jdbcType=CHAR}
+	      </if>
+	      <if test="createDatetime != null" >
+	      	and CREATE_DATETIME >=
+		      #{createDatetime,typeHandler=com.hisign.DateToStringTypeHandler}
+          </if>
+          <if test="ids != null and ids.size > 0" >
+	      	and ID in
+		      <foreach collection="ids" item="listItem" open="(" close=")" separator="," >
+	            #{listItem}
+	          </foreach>
+          </if>
+  	</where>
+  </sql>
+  <sql id="OraclePagePrefix" >  
+      select * from ( select row_.*, rownum rownum_ from (   
+  </sql>  
+  <sql id="OraclePageSuffix" >  
+     <![CDATA[ ) row_ ) where rownum_ > #{startNum} and rownum_ <= #{endNum} ]]>  
+  </sql>
+  <select id="findSysUserListByFilter" parameterType="UserFilter" resultType="SysUser">
+  	<include refid="OraclePagePrefix" />
+    select
+    <include refid="Base_Column_List" />
+    from SYS_USER
+    <include refid="select_By_Filter_For_Where" />
+    <include refid="OraclePageSuffix" />
+  </select>
+  <select id="findSysUserListByFilterForCount" parameterType="UserFilter" resultType="Integer">
+    select
+    <include refid="ForCount" />
+    from SYS_USER
+    <include refid="select_By_Filter_For_Where" />
+  </select>
+  
+  <select id="selectByExample" parameterType="UserFilter" resultType="SysUser">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from SYS_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultType="SysUser" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_USER
+    where ID = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SYS_USER
+    where ID = #{id,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hisign.model.SysUserExample" >
+    delete from SYS_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hisign.model.SysUser" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into SYS_USER (ID, USERNAME, PASSWORD, 
+      TRUE_NAME, USER_LEVEL, OPEN_FLAG, 
+      DEFAULT_MODULE, REMARK, CREATE_USER, 
+      CREATE_DATETIME, 
+      UPDATE_USER, UPDATE_DATETIME, 
+      POLICE_ID, CARD_ID, USER_TEL, 
+      USER_UNIT, IP, IFIP, REV1, 
+      REV2, REV3, REV4, REV5, 
+      REV6, REV7)
+    values (#{id,jdbcType=CHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{trueName,jdbcType=VARCHAR}, #{userLevel,jdbcType=CHAR}, #{openFlag,jdbcType=VARCHAR}, 
+      #{defaultModule,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler}, 
+      #{policeId,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, #{userTel,jdbcType=VARCHAR}, 
+      #{userUnit,jdbcType=CHAR}, #{ip,jdbcType=VARCHAR}, #{ifip,jdbcType=CHAR}, #{rev1,jdbcType=VARCHAR}, 
+      #{rev2,jdbcType=VARCHAR}, #{rev3,jdbcType=VARCHAR}, #{rev4,jdbcType=VARCHAR}, #{rev5,jdbcType=VARCHAR}, 
+      #{rev6,jdbcType=VARCHAR}, #{rev7,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hisign.model.SysUser" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into SYS_USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      <if test="username != null" >
+        USERNAME,
+      </if>
+      <if test="password != null" >
+        PASSWORD,
+      </if>
+      <if test="trueName != null" >
+        TRUE_NAME,
+      </if>
+      <if test="userLevel != null" >
+        USER_LEVEL,
+      </if>
+      <if test="openFlag != null" >
+        OPEN_FLAG,
+      </if>
+      <if test="defaultModule != null" >
+        DEFAULT_MODULE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER,
+      </if>
+      <if test="createDatetime != null" >
+        CREATE_DATETIME,
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER,
+      </if>
+      <if test="updateDatetime != null" >
+        UPDATE_DATETIME,
+      </if>
+      <if test="policeId != null" >
+        POLICE_ID,
+      </if>
+      <if test="cardId != null" >
+        CARD_ID,
+      </if>
+      <if test="userTel != null" >
+        USER_TEL,
+      </if>
+      <if test="userUnit != null" >
+        USER_UNIT,
+      </if>
+      <if test="ip != null" >
+        IP,
+      </if>
+      <if test="ifip != null" >
+        IFIP,
+      </if>
+      <if test="rev1 != null" >
+        REV1,
+      </if>
+      <if test="rev2 != null" >
+        REV2,
+      </if>
+      <if test="rev3 != null" >
+        REV3,
+      </if>
+      <if test="rev4 != null" >
+        REV4,
+      </if>
+      <if test="rev5 != null" >
+        REV5,
+      </if>
+      <if test="rev6 != null" >
+        REV6,
+      </if>
+      <if test="rev7 != null" >
+        REV7,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=CHAR},
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null" >
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null" >
+        #{userLevel,jdbcType=CHAR},
+      </if>
+      <if test="openFlag != null" >
+        #{openFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultModule != null" >
+        #{defaultModule,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createDatetime != null" >
+        #{createDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDatetime != null" >
+        #{updateDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      </if>
+      <if test="policeId != null" >
+        #{policeId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null" >
+        #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userUnit != null" >
+        #{userUnit,jdbcType=CHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="ifip != null" >
+        #{ifip,jdbcType=CHAR},
+      </if>
+      <if test="rev1 != null" >
+        #{rev1,jdbcType=VARCHAR},
+      </if>
+      <if test="rev2 != null" >
+        #{rev2,jdbcType=VARCHAR},
+      </if>
+      <if test="rev3 != null" >
+        #{rev3,jdbcType=VARCHAR},
+      </if>
+      <if test="rev4 != null" >
+        #{rev4,jdbcType=VARCHAR},
+      </if>
+      <if test="rev5 != null" >
+        #{rev5,jdbcType=VARCHAR},
+      </if>
+      <if test="rev6 != null" >
+        #{rev6,jdbcType=VARCHAR},
+      </if>
+      <if test="rev7 != null" >
+        #{rev7,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hisign.model.SysUserExample" resultType="java.lang.Integer" >
+    select count(*) from SYS_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update SYS_USER
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=CHAR},
+      </if>
+      <if test="record.username != null" >
+        USERNAME = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trueName != null" >
+        TRUE_NAME = #{record.trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userLevel != null" >
+        USER_LEVEL = #{record.userLevel,jdbcType=CHAR},
+      </if>
+      <if test="record.openFlag != null" >
+        OPEN_FLAG = #{record.openFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.defaultModule != null" >
+        DEFAULT_MODULE = #{record.defaultModule,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUser != null" >
+        CREATE_USER = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDatetime != null" >
+        CREATE_DATETIME = #{record.createDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      </if>
+      <if test="record.updateUser != null" >
+        UPDATE_USER = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDatetime != null" >
+        UPDATE_DATETIME = #{record.updateDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      </if>
+      <if test="record.policeId != null" >
+        POLICE_ID = #{record.policeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardId != null" >
+        CARD_ID = #{record.cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userTel != null" >
+        USER_TEL = #{record.userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userUnit != null" >
+        USER_UNIT = #{record.userUnit,jdbcType=CHAR},
+      </if>
+      <if test="record.ip != null" >
+        IP = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ifip != null" >
+        IFIP = #{record.ifip,jdbcType=CHAR},
+      </if>
+      <if test="record.rev1 != null" >
+        REV1 = #{record.rev1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rev2 != null" >
+        REV2 = #{record.rev2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rev3 != null" >
+        REV3 = #{record.rev3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rev4 != null" >
+        REV4 = #{record.rev4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rev5 != null" >
+        REV5 = #{record.rev5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rev6 != null" >
+        REV6 = #{record.rev6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rev7 != null" >
+        REV7 = #{record.rev7,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update SYS_USER
+    set ID = #{record.id,jdbcType=CHAR},
+      USERNAME = #{record.username,jdbcType=VARCHAR},
+      PASSWORD = #{record.password,jdbcType=VARCHAR},
+      TRUE_NAME = #{record.trueName,jdbcType=VARCHAR},
+      USER_LEVEL = #{record.userLevel,jdbcType=CHAR},
+      OPEN_FLAG = #{record.openFlag,jdbcType=VARCHAR},
+      DEFAULT_MODULE = #{record.defaultModule,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      CREATE_USER = #{record.createUser,jdbcType=VARCHAR},
+      CREATE_DATETIME = #{record.createDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      UPDATE_USER = #{record.updateUser,jdbcType=VARCHAR},
+      UPDATE_DATETIME = #{record.updateDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      POLICE_ID = #{record.policeId,jdbcType=VARCHAR},
+      CARD_ID = #{record.cardId,jdbcType=VARCHAR},
+      USER_TEL = #{record.userTel,jdbcType=VARCHAR},
+      USER_UNIT = #{record.userUnit,jdbcType=CHAR},
+      IP = #{record.ip,jdbcType=VARCHAR},
+      IFIP = #{record.ifip,jdbcType=CHAR},
+      REV1 = #{record.rev1,jdbcType=VARCHAR},
+      REV2 = #{record.rev2,jdbcType=VARCHAR},
+      REV3 = #{record.rev3,jdbcType=VARCHAR},
+      REV4 = #{record.rev4,jdbcType=VARCHAR},
+      REV5 = #{record.rev5,jdbcType=VARCHAR},
+      REV6 = #{record.rev6,jdbcType=VARCHAR},
+      REV7 = #{record.rev7,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hisign.model.SysUser" >
+    update SYS_USER
+    <set >
+      <if test="username != null" >
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null" >
+        TRUE_NAME = #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null" >
+        USER_LEVEL = #{userLevel,jdbcType=CHAR},
+      </if>
+      <if test="openFlag != null" >
+        OPEN_FLAG = #{openFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultModule != null" >
+        DEFAULT_MODULE = #{defaultModule,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createDatetime != null" >
+        CREATE_DATETIME = #{createDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDatetime != null" >
+        UPDATE_DATETIME = #{updateDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      </if>
+      <if test="policeId != null" >
+        POLICE_ID = #{policeId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null" >
+        CARD_ID = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        USER_TEL = #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userUnit != null" >
+        USER_UNIT = #{userUnit,jdbcType=CHAR},
+      </if>
+      <if test="ip != null" >
+        IP = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="ifip != null" >
+        IFIP = #{ifip,jdbcType=CHAR},
+      </if>
+      <if test="rev1 != null" >
+        REV1 = #{rev1,jdbcType=VARCHAR},
+      </if>
+      <if test="rev2 != null" >
+        REV2 = #{rev2,jdbcType=VARCHAR},
+      </if>
+      <if test="rev3 != null" >
+        REV3 = #{rev3,jdbcType=VARCHAR},
+      </if>
+      <if test="rev4 != null" >
+        REV4 = #{rev4,jdbcType=VARCHAR},
+      </if>
+      <if test="rev5 != null" >
+        REV5 = #{rev5,jdbcType=VARCHAR},
+      </if>
+      <if test="rev6 != null" >
+        REV6 = #{rev6,jdbcType=VARCHAR},
+      </if>
+      <if test="rev7 != null" >
+        REV7 = #{rev7,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hisign.model.SysUser" >
+    update SYS_USER
+    set USERNAME = #{username,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      TRUE_NAME = #{trueName,jdbcType=VARCHAR},
+      USER_LEVEL = #{userLevel,jdbcType=CHAR},
+      OPEN_FLAG = #{openFlag,jdbcType=VARCHAR},
+      DEFAULT_MODULE = #{defaultModule,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      CREATE_DATETIME = #{createDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      UPDATE_DATETIME = #{updateDatetime,jdbcType=DATE,typeHandler=com.hisign.DateToStringTypeHandler},
+      POLICE_ID = #{policeId,jdbcType=VARCHAR},
+      CARD_ID = #{cardId,jdbcType=VARCHAR},
+      USER_TEL = #{userTel,jdbcType=VARCHAR},
+      USER_UNIT = #{userUnit,jdbcType=CHAR},
+      IP = #{ip,jdbcType=VARCHAR},
+      IFIP = #{ifip,jdbcType=CHAR},
+      REV1 = #{rev1,jdbcType=VARCHAR},
+      REV2 = #{rev2,jdbcType=VARCHAR},
+      REV3 = #{rev3,jdbcType=VARCHAR},
+      REV4 = #{rev4,jdbcType=VARCHAR},
+      REV5 = #{rev5,jdbcType=VARCHAR},
+      REV6 = #{rev6,jdbcType=VARCHAR},
+      REV7 = #{rev7,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=CHAR}
+  </update>
+</mapper>
