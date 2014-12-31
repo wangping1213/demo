@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.hisign.dao.SysUserMapper;
 import com.hisign.model.SysUser;
-import com.hisign.model.SysUserExample;
 import com.hisign.model.UserFilter;
 
 /**
@@ -45,6 +44,12 @@ public class UserServiceImpl implements UserService.Iface {
 		return sysUserMapper.findSysUserListByFilterForCount(filter);
 	}
 
+	public SysUserMapper getSysUserMapper() {
+		return sysUserMapper;
+	}
 
+	public void setSysUserMapper(SysUserMapper sysUserMapper) {
+		this.sysUserMapper = sysUserMapper;
+	}
 
 }
